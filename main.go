@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os/exec"
+	"os/user"
 	"sync"
 	"time"
 
@@ -30,7 +31,12 @@ func main() {
 		}
 	}(playagain)
 
-	db, err := bolt.Open(".cache.dix.boltdb", 0600, &bolt.Options{Timeout: 1 * time.Second})
+	homedir := "/tmp"
+	if u, _ := user.Current(); u != nil {
+		homedir = u.HomeDir
+	}
+
+	db, err := bolt.Open(homedir+"/.cache.dix.boltdb", 0600, &bolt.Options{Timeout: 1 * time.Second})
 	if err != nil {
 		log.Fatal(err)
 	}
