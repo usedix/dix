@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/usedix/dix/clip"
@@ -26,6 +27,8 @@ func Words(dictionary dict.Dictionary) <-chan *dict.Word {
 		lastWord := ""
 		for {
 			selectedWord := clip.Primary()
+			selectedWord = strings.TrimSpace(selectedWord)
+
 			if lastWord == selectedWord {
 				time.Sleep(clipCheckInterval)
 				continue
